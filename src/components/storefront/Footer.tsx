@@ -31,15 +31,21 @@ export function Footer() {
     >
       <div className="container-x grid gap-x-5 gap-y-9 py-10 text-center md:grid-cols-2 md:gap-10 md:py-14 lg:grid-cols-4">
         <div className="md:col-span-2 lg:col-span-1">
-          <h3
-            className={cn(
-              "text-lg font-semibold",
-              !settings.footer_text_color && "text-primary",
+          <div className="flex items-center justify-center gap-2 md:justify-start lg:justify-center">
+            {settings.logo_url && (
+              <img
+                src={settings.logo_url}
+                alt={settings.store_name}
+                className="h-9 w-auto object-contain md:h-10"
+              />
             )}
-            style={settings.footer_text_color ? { color: settings.footer_text_color } : undefined}
-          >
-            {settings.store_name}
-          </h3>
+            <h3
+              className={cn("text-lg font-semibold", !settings.footer_text_color && "text-primary")}
+              style={settings.footer_text_color ? { color: settings.footer_text_color } : undefined}
+            >
+              {settings.store_name}
+            </h3>
+          </div>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {settings.footer_text || settings.tagline}
           </p>
