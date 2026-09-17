@@ -175,27 +175,15 @@ function HomePage() {
             const products = result?.data ?? [];
             const flag = sectionFlag(section);
             const isHot = flag === "hot";
-            const isNew = flag === "new";
             return (
               <section key={section.id} className="container-x section-py">
                 <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
-                  {isNew ? (
-                    <div className="mb-4 flex items-center justify-center">
-                      <h2
-                        className="rounded-full bg-primary px-5 py-2 text-base font-semibold text-primary-foreground shadow-sm md:text-lg"
-                        style={typographyStyle(settings, "heading", sectionTypography(section.config, "heading"))}
-                      >
-                        {section.title || "নতুন কালেকশন"}
-                      </h2>
-                    </div>
-                  ) : (
-                    <SectionHeading
-                      title={section.title || ""}
-                      subtitle={section.subtitle}
-                      titleStyle={sectionTypography(section.config, "heading")}
-                      subtitleStyle={sectionTypography(section.config, "subheading")}
-                    />
-                  )}
+                  <SectionHeading
+                    title={section.title || ""}
+                    subtitle={section.subtitle}
+                    titleStyle={sectionTypography(section.config, "heading")}
+                    subtitleStyle={sectionTypography(section.config, "subheading")}
+                  />
                   {result?.isLoading ? (
                     <ProductGridSkeleton count={4} />
                   ) : products.length ? (

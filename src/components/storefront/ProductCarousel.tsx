@@ -1,10 +1,3 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import type { Product } from "@/lib/types";
 
@@ -18,26 +11,14 @@ export function ProductGrid({ products }: { products: Product[] }) {
   );
 }
 
-/** Horizontal product carousel with stable card widths at every breakpoint. */
+/** Horizontal scroll carousel — mobile-first, becomes a grid on large screens. */
 export function ProductCarousel({ products }: { products: Product[] }) {
   return (
-    <Carousel
-      opts={{ align: "start", containScroll: "trimSnaps" }}
-      className="px-9 sm:px-10"
-    >
-      <CarouselContent className="-ml-3 md:-ml-4">
-        {products.map((p) => (
-          <CarouselItem
-            key={p.id}
-            className="basis-[78%] pl-3 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4 xl:basis-1/5"
-          >
-            <ProductCard product={p} className="h-full" />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious className="left-0 border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" />
-      <CarouselNext className="right-0 border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" />
-    </Carousel>
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+      {products.map((p) => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </div>
   );
 }
 
