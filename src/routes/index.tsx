@@ -1,6 +1,6 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Mail } from "lucide-react";
+import { Flame, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { CategoryScroller } from "@/components/storefront/CategoryCard";
@@ -91,16 +91,19 @@ function FlashSaleHeader({
   const seconds = totalSeconds % 60;
 
   return (
-    <div className="mb-4 flex flex-col gap-3 border-b border-primary/15 pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-4 flex flex-col gap-4 border-b border-orange-500/25 pb-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="text-left">
-        <h2 className="text-xl font-bold text-primary md:text-3xl">{title}</h2>
+        <h2 className="flex items-center gap-2 text-xl font-bold text-red-700 md:text-3xl">
+          <Flame className="size-6 fill-orange-500 text-orange-500 md:size-8" />
+          {title}
+        </h2>
         {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      <div className="shrink-0 self-start rounded-xl bg-primary px-3 py-2 text-primary-foreground shadow-md sm:self-auto">
-        <p className="mb-1 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-foreground/75">
+      <div className="shrink-0 self-start text-red-700 sm:self-auto">
+        <p className="mb-1 text-left text-[10px] font-bold uppercase tracking-[0.18em] text-orange-700 sm:text-right">
           অফার শেষ হবে
         </p>
-        <div className="flex items-center gap-1.5 font-mono text-sm font-bold md:text-base">
+        <div className="flex items-baseline gap-2 font-mono text-2xl font-black leading-none md:gap-3 md:text-4xl">
           {days > 0 && <TimerUnit value={days} label="দিন" />}
           <TimerUnit value={hours} label="ঘণ্টা" />
           <TimerUnit value={minutes} label="মিনিট" />
@@ -113,9 +116,9 @@ function FlashSaleHeader({
 
 function TimerUnit({ value, label }: { value: number; label: string }) {
   return (
-    <span className="flex items-baseline gap-0.5">
+    <span className="flex items-baseline gap-1">
       <span>{String(value).padStart(2, "0")}</span>
-      <span className="text-[9px] font-sans font-normal text-primary-foreground/75">{label}</span>
+      <span className="text-[10px] font-sans font-bold text-orange-700 md:text-xs">{label}</span>
     </span>
   );
 }
@@ -260,7 +263,7 @@ function HomePage() {
                 <div
                   className={
                     isFlashSale
-                      ? "rounded-2xl border-2 border-primary/30 bg-primary/5 p-3 shadow-lg md:p-4"
+                      ? "rounded-2xl border-2 border-orange-500/45 bg-gradient-to-br from-orange-50 via-amber-50 to-red-50 p-3 shadow-[0_10px_35px_-15px_rgba(234,88,12,0.65)] md:p-4"
                       : "rounded-2xl border border-border bg-surface p-3 md:p-4"
                   }
                 >
