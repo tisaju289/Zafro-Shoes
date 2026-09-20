@@ -11,11 +11,13 @@ import { PromoBannerCarousel } from "@/components/storefront/PromoBanner";
 import { SectionHeading, StoreLayout } from "@/components/storefront/StoreLayout";
 import { VideoShowcase } from "@/components/storefront/VideoShowcase";
 import { Button } from "@/components/ui/button";
+import { RatingStars } from "@/components/storefront/RatingStars";
 import {
   categoriesQuery,
   flaggedProductsQuery,
   heroSlidesQuery,
   homepageSectionsQuery,
+  homepageReviewsQuery,
   promoBannersQuery,
   showcaseVideosQuery,
   type ProductFlag,
@@ -132,6 +134,7 @@ function HomePage() {
   const { data: categories = [] } = useQuery(categoriesQuery);
   const { data: banners = [] } = useQuery(promoBannersQuery);
   const { data: videos = [] } = useQuery(showcaseVideosQuery);
+  const { data: reviews = [] } = useQuery(homepageReviewsQuery);
 
   const productSections = sections.filter((s) => s.is_visible && sectionFlag(s));
 
@@ -204,6 +207,43 @@ function HomePage() {
                     subtitleStyle={sectionTypography(section.config, "subheading")}
                   />
                   <VideoShowcase videos={videos.slice(0, section.product_limit || 8)} />
+                </div>
+              </section>
+            ) : null;
+
+          case "reviews":
+            return reviews.length ? (
+              <section key={section.id} className="container-x section-py">
+                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+                  <SectionHeading
+                    title={section.title || "গ্রাহকদের মতামত"}
+                    subtitle={section.subtitle}
+                    titleStyle={sectionTypography(section.config, "heading")}
+                    subtitleStyle={sectionTypography(section.config, "subheading")}
+                  />
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {reviews.slice(0, section.product_limit || 6).map((review) => (
+                      <article
+                        key={review.id}
+                        className="rounded-xl border border-border/70 bg-background p-4"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="font-semibold">{review.reviewer_name}</p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              {review.products?.name || "পণ্য"}
+                            </p>
+                          </div>
+                          <RatingStars rating={review.rating} />
+                        </div>
+                        {review.comment && (
+                          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            “{review.comment}”
+                          </p>
+                        )}
+                      </article>
+                    ))}
+                  </div>
                 </div>
               </section>
             ) : null;

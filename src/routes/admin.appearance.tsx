@@ -622,7 +622,7 @@ const PRODUCT_FLAGS: { value: string; label: string }[] = [
   { value: "flash_sale", label: "ফ্ল্যাশ সেল" },
 ];
 
-const FIXED_KEYS = ["hero", "categories", "promo_banners", "videos", "newsletter"];
+const FIXED_KEYS = ["hero", "categories", "promo_banners", "videos", "reviews", "newsletter"];
 
 const sectionTypeLabel = (s: HomepageSection) => {
   const fixed: Record<string, string> = {
@@ -630,6 +630,7 @@ const sectionTypeLabel = (s: HomepageSection) => {
     categories: "ক্যাটাগরি",
     promo_banners: "প্রোমো ব্যানার",
     videos: "ভিডিও সেকশন",
+    reviews: "গ্রাহকের রিভিউ",
     newsletter: "নিউজলেটার",
   };
   if (fixed[s.section_key]) return fixed[s.section_key]!;
@@ -751,7 +752,11 @@ function SectionsTab() {
                 <TableCell className="font-medium">{s.title || s.section_key}</TableCell>
                 <TableCell className="text-muted-foreground">{sectionTypeLabel(s)}</TableCell>
                 <TableCell>{s.sort_order}</TableCell>
-                <TableCell>{FIXED_KEYS.includes(s.section_key) ? "—" : s.product_limit}</TableCell>
+                <TableCell>
+                  {s.section_key === "reviews" || !FIXED_KEYS.includes(s.section_key)
+                    ? s.product_limit
+                    : "—"}
+                </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Switch
@@ -847,9 +852,11 @@ function SectionsTab() {
                   value={String(editing.sort_order)}
                   onChange={(v) => patch({ sort_order: Number(v || 0) })}
                 />
-                {(isProductSection || editing.id === "new") && (
+                {(isProductSection ||
+                  editing.section_key === "reviews" ||
+                  editing.id === "new") && (
                   <Field
-                    label="পণ্য সংখ্যা"
+                    label={editing.section_key === "reviews" ? "রিভিউ সংখ্যা" : "পণ্য সংখ্যা"}
                     type="number"
                     value={String(editing.product_limit)}
                     onChange={(v) => patch({ product_limit: Number(v || 0) })}

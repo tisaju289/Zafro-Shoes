@@ -84,6 +84,21 @@ export const showcaseVideosQuery = {
   staleTime: 5 * 60_000,
 };
 
+export const homepageReviewsQuery = {
+  queryKey: ["homepage-reviews"],
+  queryFn: async (): Promise<Review[]> => {
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("id,product_id,reviewer_name,rating,comment,is_approved,created_at,products(name)")
+      .eq("is_approved", true)
+      .order("created_at", { ascending: false })
+      .limit(12);
+    if (error) throw error;
+    return (data ?? []) as unknown as Review[];
+  },
+  staleTime: 60_000,
+};
+
 export type ProductFlag = "best_selling" | "trending" | "hot" | "featured" | "new" | "flash_sale";
 
 export function flaggedProductsQuery(flag: ProductFlag, limit: number) {
