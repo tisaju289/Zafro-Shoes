@@ -62,7 +62,7 @@ export function ProductCard({ product, className }: { product: Product; classNam
         <Heart className={cn("size-4", wishlist.has(product.id) && "fill-primary text-primary")} />
       </button>
 
-      <div className="flex flex-1 flex-col items-center gap-1.5 p-2.5 text-center md:items-start md:gap-2 md:p-4 md:text-left">
+      <div className="flex flex-1 flex-col items-center gap-1.5 p-2.5 text-center md:gap-2 md:p-4">
         <Link to="/product/$slug" params={{ slug: product.slug }} className="min-h-10">
           <h3 className="line-clamp-2 text-sm font-medium leading-snug transition-colors group-hover:text-primary md:text-[15px]">
             {product.name}
@@ -75,9 +75,15 @@ export function ProductCard({ product, className }: { product: Product; classNam
           price={product.price}
           salePrice={product.sale_price}
           showDiscount={false}
+          className="justify-center"
         />
-        <div className="mt-auto pt-2">
-          <Button asChild variant="outline" size="sm" className="w-full">
+        {product.sizes?.length > 0 && (
+          <p className="w-full max-w-full truncate text-center text-xs text-muted-foreground">
+            <span className="font-medium text-foreground">সাইজ:</span> {product.sizes.join(", ")}
+          </p>
+        )}
+        <div className="mt-auto flex w-full justify-center pt-2">
+          <Button asChild variant="outline" size="sm" className="min-w-32">
             <Link to="/product/$slug" params={{ slug: product.slug }}>
               বিস্তারিত দেখুন
             </Link>
