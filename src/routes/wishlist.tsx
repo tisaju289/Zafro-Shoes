@@ -11,8 +11,8 @@ import { useWishlist } from "@/lib/wishlist";
 export const Route = createFileRoute("/wishlist")({
   head: () => ({
     meta: [
-      { title: "পছন্দের তালিকা — সংরক্ষিত পোশাক" },
-      { name: "description", content: "আপনার পছন্দের পোশাকগুলো এক জায়গায় সংরক্ষিত রাখুন।" },
+      { title: "পছন্দের তালিকা — সংরক্ষিত জুতা" },
+      { name: "description", content: "আপনার পছন্দের জুতাগুলো এক জায়গায় সংরক্ষিত রাখুন।" },
       { property: "og:title", content: "পছন্দের তালিকা" },
       { property: "og:description", content: "সংরক্ষিত পণ্যগুলো দেখুন ও অর্ডার করুন।" },
       { property: "og:type", content: "website" },
@@ -49,7 +49,10 @@ function WishlistPage() {
             ))}
           </div>
         ) : (
-          <EmptyState title="পণ্যগুলো আর নেই" description="সংরক্ষিত পণ্যগুলো বর্তমানে পাওয়া যাচ্ছে না।" />
+          <EmptyState
+            title="পণ্যগুলো আর নেই"
+            description="সংরক্ষিত পণ্যগুলো বর্তমানে পাওয়া যাচ্ছে না।"
+          />
         )}
       </div>
     </StoreLayout>

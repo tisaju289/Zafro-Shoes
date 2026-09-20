@@ -72,13 +72,15 @@ export type StoreSettings = {
 
 export const defaultSettings: StoreSettings = {
   header_announcement_enabled: true,
-  header_announcement_text: "সারা বাংলাদেশে ক্যাশ অন ডেলিভারি",
+  header_announcement_text: "সারা বাংলাদেশে ফ্রি ডেলিভারি · জুতা বদলের সুবিধা",
   header_show_search: true,
   header_show_wishlist: true,
   header_sticky: true,
   header_nav: [
     { label: "হোম", url: "/" },
-    { label: "শপ", url: "/shop" },
+    { label: "পুরুষ", url: "/category/men" },
+    { label: "নারী", url: "/category/women" },
+    { label: "সব জুতা", url: "/shop" },
     { label: "ক্যাটাগরি", url: "/categories" },
     { label: "অফার", url: "/offers" },
     { label: "আমাদের সম্পর্কে", url: "/about" },
@@ -109,8 +111,8 @@ export const defaultSettings: StoreSettings = {
   footer_contact_title: "যোগাযোগ",
   footer_payment_text: "পেমেন্ট: ক্যাশ অন ডেলিভারি",
   footer_show_social: true,
-  store_name: "আমার স্টোর",
-  tagline: "প্রিমিয়াম বাংলাদেশি ফ্যাশন",
+  store_name: "ZAFRO SHOES",
+  tagline: "প্রতিদিনের পথচলায় নিখুঁত জোড়া",
   logo_url: "",
   favicon_url: "",
   phone: "",

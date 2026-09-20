@@ -25,16 +25,16 @@ import { sectionTypography, typographyStyle } from "@/lib/typography";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "প্রিমিয়াম বাংলাদেশি ফ্যাশন — অনলাইন কালেকশন" },
+      { title: "ZAFRO SHOES — ছেলে ও মেয়েদের জুতার কালেকশন" },
       {
         name: "description",
         content:
-          "শাড়ি, থ্রি-পিস, কুর্তি ও কামিজের অভিজাত কালেকশন। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি সুবিধা।",
+          "ছেলে ও মেয়েদের জন্য স্টাইলিশ, আরামদায়ক ও মানসম্পন্ন জুতার কালেকশন। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি।",
       },
-      { property: "og:title", content: "প্রিমিয়াম বাংলাদেশি ফ্যাশন — অনলাইন কালেকশন" },
+      { property: "og:title", content: "ZAFRO SHOES — ছেলে ও মেয়েদের জুতার কালেকশন" },
       {
         property: "og:description",
-        content: "শাড়ি, থ্রি-পিস, কুর্তি ও কামিজের অভিজাত কালেকশন। ক্যাশ অন ডেলিভারি।",
+        content: "ছেলে ও মেয়েদের স্টাইলিশ জুতা, সারা দেশে ক্যাশ অন ডেলিভারি।",
       },
     ],
   }),
@@ -47,7 +47,9 @@ function sectionFlag(section: { section_key: string; config?: Record<string, unk
   const fromConfig = section.config?.["flag"];
   if (typeof fromConfig === "string" && VALID_FLAGS.includes(fromConfig as ProductFlag))
     return fromConfig as ProductFlag;
-  return VALID_FLAGS.find((f) => section.section_key === f || section.section_key.startsWith(`${f}_`));
+  return VALID_FLAGS.find(
+    (f) => section.section_key === f || section.section_key.startsWith(`${f}_`),
+  );
 }
 
 function HomePage() {
@@ -141,13 +143,21 @@ function HomePage() {
                     <Mail className="mx-auto size-8 text-primary" />
                     <h2
                       className="mt-4 text-2xl font-semibold md:text-3xl"
-                      style={typographyStyle(settings, "heading", sectionTypography(section.config, "heading"))}
+                      style={typographyStyle(
+                        settings,
+                        "heading",
+                        sectionTypography(section.config, "heading"),
+                      )}
                     >
                       {section.title || "আমাদের সাথে থাকুন"}
                     </h2>
                     <p
                       className="mt-3 text-sm text-muted-foreground md:text-base"
-                      style={typographyStyle(settings, "subheading", sectionTypography(section.config, "subheading"))}
+                      style={typographyStyle(
+                        settings,
+                        "subheading",
+                        sectionTypography(section.config, "subheading"),
+                      )}
                     >
                       {section.subtitle || "নতুন কালেকশন ও অফারের খবর সবার আগে পান।"}
                     </p>
@@ -218,8 +228,6 @@ function HomePage() {
           }
         }
       })}
-
     </StoreLayout>
   );
 }
-

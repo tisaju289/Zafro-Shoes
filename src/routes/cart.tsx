@@ -14,7 +14,10 @@ export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
       { title: "কার্ট — আপনার নির্বাচিত পণ্য" },
-      { name: "description", content: "কার্টে থাকা পণ্য দেখুন, পরিমাণ পরিবর্তন করুন ও অর্ডার সম্পন্ন করুন।" },
+      {
+        name: "description",
+        content: "কার্টে থাকা পণ্য দেখুন, পরিমাণ পরিবর্তন করুন ও অর্ডার সম্পন্ন করুন।",
+      },
       { property: "og:title", content: "কার্ট" },
       { property: "og:description", content: "আপনার নির্বাচিত পণ্যগুলো দেখুন।" },
     ],
@@ -33,7 +36,7 @@ function CartPage() {
         {!cart.items.length ? (
           <EmptyState
             title="আপনার কার্ট খালি"
-            description="পছন্দের পোশাক কার্টে যোগ করে অর্ডার সম্পন্ন করুন।"
+            description="পছন্দের জোড়া কার্টে যোগ করে অর্ডার সম্পন্ন করুন।"
             action={
               <Button asChild>
                 <Link to="/shop">শপিং শুরু করুন</Link>
@@ -44,7 +47,10 @@ function CartPage() {
           <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
             <ul className="divide-y divide-border rounded-lg border border-border bg-card">
               {cart.items.map((item) => (
-                <li key={item.key} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-3 p-3 sm:grid-cols-[6rem_minmax(0,1fr)_auto] sm:gap-4 sm:p-4">
+                <li
+                  key={item.key}
+                  className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-3 p-3 sm:grid-cols-[6rem_minmax(0,1fr)_auto] sm:gap-4 sm:p-4"
+                >
                   <img
                     src={item.image || fallbackImage(item.name)}
                     alt={item.name}
