@@ -619,6 +619,7 @@ const PRODUCT_FLAGS: { value: string; label: string }[] = [
   { value: "hot", label: "হট পণ্য" },
   { value: "featured", label: "ফিচার্ড পণ্য" },
   { value: "new", label: "নতুন পণ্য" },
+  { value: "flash_sale", label: "ফ্ল্যাশ সেল" },
 ];
 
 const FIXED_KEYS = ["hero", "categories", "promo_banners", "videos", "newsletter"];

@@ -51,8 +51,7 @@ export const promoBannersQuery = {
       .order("sort_order");
     if (error) throw error;
     return ((data ?? []) as PromoBanner[]).filter(
-      (b) =>
-        (!b.starts_at || b.starts_at <= nowIso) && (!b.ends_at || b.ends_at >= nowIso),
+      (b) => (!b.starts_at || b.starts_at <= nowIso) && (!b.ends_at || b.ends_at >= nowIso),
     );
   },
   staleTime: 60_000,
@@ -85,7 +84,7 @@ export const showcaseVideosQuery = {
   staleTime: 5 * 60_000,
 };
 
-export type ProductFlag = "best_selling" | "trending" | "hot" | "featured" | "new";
+export type ProductFlag = "best_selling" | "trending" | "hot" | "featured" | "new" | "flash_sale";
 
 export function flaggedProductsQuery(flag: ProductFlag, limit: number) {
   return {
@@ -106,9 +105,11 @@ export function flaggedProductsQuery(flag: ProductFlag, limit: number) {
       else if (flag === "hot")
         query = query.eq("is_hot", true).order("updated_at", { ascending: false });
       else if (flag === "featured")
-        query = query.eq("is_featured", true).order("sort_order" as never, {
-          ascending: true,
-        } as never);
+        query = query
+          .eq("is_featured", true)
+          .order("sort_order" as never, { ascending: true } as never);
+      else if (flag === "flash_sale")
+        query = query.not("sale_price", "is", null).order("created_at", { ascending: false });
       else query = query.order("created_at", { ascending: false });
 
       const { data, error } = await query;

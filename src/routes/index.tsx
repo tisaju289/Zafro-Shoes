@@ -41,7 +41,14 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const VALID_FLAGS: ProductFlag[] = ["best_selling", "trending", "hot", "featured", "new"];
+const VALID_FLAGS: ProductFlag[] = [
+  "best_selling",
+  "trending",
+  "hot",
+  "featured",
+  "new",
+  "flash_sale",
+];
 
 function sectionFlag(section: { section_key: string; config?: Record<string, unknown> | null }) {
   const fromConfig = section.config?.["flag"];
