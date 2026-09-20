@@ -94,12 +94,14 @@ function FlashSaleHeader({
 
   return (
     <div className="mb-4 flex items-center justify-between gap-2 border-b border-orange-500/25 pb-4">
-      <div className="min-w-0 flex-1 text-left">
+      <div className="min-w-0 flex-1 text-left md:text-left">
         <h2 className="flex items-center gap-1.5 text-lg font-bold text-red-700 sm:gap-2 sm:text-xl md:text-3xl">
           <Flame className="size-5 shrink-0 fill-orange-500 text-orange-500 sm:size-6 md:size-8" />
           {title}
         </h2>
-        {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+        {subtitle && (
+          <p className="mt-1 w-full text-left text-sm text-muted-foreground">{subtitle}</p>
+        )}
       </div>
       <div className="shrink-0 text-right text-red-700">
         <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.12em] text-orange-700 sm:text-[10px] sm:tracking-[0.18em]">
