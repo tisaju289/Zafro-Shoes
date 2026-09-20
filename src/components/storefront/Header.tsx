@@ -14,9 +14,14 @@ import { useWishlist } from "@/lib/wishlist";
 
 export function Header() {
   const settings = useSettings();
-  const nav = settings.header_nav?.length ? settings.header_nav : defaultSettings.header_nav;
+  const legacyBranding = settings.store_name === "আমার স্টোর";
+  const nav = legacyBranding
+    ? defaultSettings.header_nav
+    : settings.header_nav?.length
+      ? settings.header_nav
+      : defaultSettings.header_nav;
+  const storeName = legacyBranding ? defaultSettings.store_name : settings.store_name;
 
-  
   const wishlist = useWishlist();
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -40,8 +45,7 @@ export function Header() {
     <header
       className={cn(
         "z-50 border-b border-border/70 backdrop-blur",
-        !settings.header_bg_color &&
-          "bg-background/95 supports-[backdrop-filter]:bg-background/80",
+        !settings.header_bg_color && "bg-background/95 supports-[backdrop-filter]:bg-background/80",
         settings.header_sticky !== false && "sticky top-0",
       )}
       style={{
@@ -74,7 +78,6 @@ export function Header() {
         </div>
       )}
 
-
       <div className="container-x grid h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:h-20 md:gap-3 lg:flex">
         <Link to="/" className="flex min-w-0 items-center gap-2 lg:shrink-0">
           {settings.logo_url && (
@@ -87,7 +90,7 @@ export function Header() {
             )}
             style={settings.header_text_color ? { color: settings.header_text_color } : undefined}
           >
-            {settings.store_name}
+            {storeName}
           </span>
         </Link>
 
@@ -117,7 +120,13 @@ export function Header() {
             </Button>
           )}
           {settings.header_show_wishlist !== false && (
-            <Button variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="উইশলিস্ট" asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden sm:inline-flex"
+              aria-label="উইশলিস্ট"
+              asChild
+            >
               <Link to="/wishlist" className="relative">
                 <Heart className="size-5" />
                 {wishlist.count > 0 && <Badge>{wishlist.count}</Badge>}

@@ -25,16 +25,16 @@ import { sectionTypography, typographyStyle } from "@/lib/typography";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ZAFRO SHOES — ছেলে ও মেয়েদের জুতার কালেকশন" },
+      { title: "প্রিমিয়াম বাংলাদেশি ফ্যাশন — অনলাইন কালেকশন" },
       {
         name: "description",
         content:
-          "ছেলে ও মেয়েদের জন্য স্টাইলিশ, আরামদায়ক ও মানসম্পন্ন জুতার কালেকশন। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি।",
+          "শাড়ি, থ্রি-পিস, কুর্তি ও কামিজের অভিজাত কালেকশন। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি সুবিধা।",
       },
-      { property: "og:title", content: "ZAFRO SHOES — ছেলে ও মেয়েদের জুতার কালেকশন" },
+      { property: "og:title", content: "প্রিমিয়াম বাংলাদেশি ফ্যাশন — অনলাইন কালেকশন" },
       {
         property: "og:description",
-        content: "ছেলে ও মেয়েদের স্টাইলিশ জুতা, সারা দেশে ক্যাশ অন ডেলিভারি।",
+        content: "শাড়ি, থ্রি-পিস, কুর্তি ও কামিজের অভিজাত কালেকশন। ক্যাশ অন ডেলিভারি।",
       },
     ],
   }),
@@ -88,7 +88,7 @@ function HomePage() {
           case "categories":
             return (
               <section key={section.id} className="container-x section-py">
-                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
+                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
                   <SectionHeading
                     title={section.title || "ক্যাটাগরি"}
                     subtitle={section.subtitle}
@@ -114,7 +114,7 @@ function HomePage() {
           case "promo_banners":
             return banners.length ? (
               <section key={section.id} className="container-x section-py">
-                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
+                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
                   <PromoBannerCarousel banners={banners} />
                 </div>
               </section>
@@ -123,7 +123,7 @@ function HomePage() {
           case "videos":
             return videos.length ? (
               <section key={section.id} className="container-x section-py">
-                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
+                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
                   <SectionHeading
                     title={section.title || "ভিডিও কালেকশন"}
                     subtitle={section.subtitle}
@@ -138,7 +138,7 @@ function HomePage() {
           case "newsletter":
             return (
               <section key={section.id} className="container-x section-py">
-                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
+                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
                   <div className="max-w-2xl text-center mx-auto">
                     <Mail className="mx-auto size-8 text-primary" />
                     <h2

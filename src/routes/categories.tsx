@@ -10,12 +10,9 @@ import { categoriesQuery } from "@/lib/queries";
 export const Route = createFileRoute("/categories")({
   head: () => ({
     meta: [
-      { title: "সব ক্যাটাগরি — জুতার সংগ্রহ" },
-      {
-        name: "description",
-        content: "ছেলে ও মেয়েদের স্নিকার্স, স্যান্ডেল, ফরমাল ও ক্যাজুয়াল জুতার ক্যাটাগরি দেখুন।",
-      },
-      { property: "og:title", content: "সব ক্যাটাগরি — জুতার সংগ্রহ" },
+      { title: "সব ক্যাটাগরি — পোশাকের সংগ্রহ" },
+      { name: "description", content: "শাড়ি, থ্রি-পিস, কুর্তি, কামিজ ও হিজাবসহ সব ক্যাটাগরি দেখুন।" },
+      { property: "og:title", content: "সব ক্যাটাগরি — পোশাকের সংগ্রহ" },
       { property: "og:description", content: "আপনার পছন্দের ক্যাটাগরি বেছে নিন।" },
     ],
   }),
@@ -27,11 +24,7 @@ function CategoriesPage() {
 
   return (
     <StoreLayout>
-      <PageHeader
-        eyebrow="ব্রাউজ"
-        title="ক্যাটাগরি"
-        description="আপনার পছন্দের কালেকশন বেছে নিন।"
-      />
+      <PageHeader eyebrow="ব্রাউজ" title="ক্যাটাগরি" description="আপনার পছন্দের কালেকশন বেছে নিন।" />
       <div className="container-x py-10">
         {isLoading ? (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

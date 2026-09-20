@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  EmptyState,
-  ErrorState,
-  ProductGridSkeleton,
-} from "@/components/storefront/LoadingSkeleton";
+import { EmptyState, ErrorState, ProductGridSkeleton } from "@/components/storefront/LoadingSkeleton";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import { PageHeader, StoreLayout } from "@/components/storefront/StoreLayout";
 import { saleProductsQuery } from "@/lib/queries";
@@ -16,10 +12,10 @@ export const Route = createFileRoute("/offers")({
       { title: "অফার ও ডিসকাউন্ট — সীমিত সময়ের ছাড়" },
       {
         name: "description",
-        content: "চলমান অফারে ছাড়ে পছন্দের জুতা কিনুন। সীমিত সময়ের ডিসকাউন্ট দেখে নিন।",
+        content: "চলমান অফারে ছাড়ে পোশাক কিনুন। সীমিত সময়ের ডিসকাউন্ট দেখে নিন।",
       },
       { property: "og:title", content: "অফার ও ডিসকাউন্ট" },
-      { property: "og:description", content: "সীমিত সময়ের ছাড়ে জনপ্রিয় জুতার কালেকশন।" },
+      { property: "og:description", content: "সীমিত সময়ের ছাড়ে জনপ্রিয় পোশাক।" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -45,10 +41,7 @@ function OffersPage() {
             ))}
           </div>
         ) : (
-          <EmptyState
-            title="এখন কোনো অফার চলছে না"
-            description="নতুন অফারের জন্য শীঘ্রই আবার দেখুন।"
-          />
+          <EmptyState title="এখন কোনো অফার চলছে না" description="নতুন অফারের জন্য শীঘ্রই আবার দেখুন।" />
         )}
       </div>
     </StoreLayout>

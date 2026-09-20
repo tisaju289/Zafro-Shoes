@@ -9,7 +9,7 @@ import { categoryQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/category/$slug")({
   head: ({ params }) => {
-    const title = `${params.slug} ক্যাটাগরির জুতা`;
+    const title = `${params.slug} ক্যাটাগরির পোশাক`;
     return {
       meta: [
         { title },

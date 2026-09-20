@@ -10,10 +10,10 @@ export const Route = createFileRoute("/shop")({
       {
         name: "description",
         content:
-          "স্নিকার্স, স্যান্ডেল, ফরমাল ও ক্যাজুয়াল জুতা — দাম, সাইজ ও রঙ অনুযায়ী ফিল্টার করুন।",
+          "শাড়ি, থ্রি-পিস, কুর্তি, কামিজ ও আরও অনেক কিছু — দাম, সাইজ ও রঙ অনুযায়ী ফিল্টার করুন।",
       },
       { property: "og:title", content: "শপ — সম্পূর্ণ কালেকশন" },
-      { property: "og:description", content: "ছেলে ও মেয়েদের সব জুতার কালেকশন এক জায়গায়।" },
+      { property: "og:description", content: "সব পোশাকের কালেকশন এক জায়গায়।" },
     ],
   }),
   component: ShopPage,
@@ -25,7 +25,7 @@ function ShopPage() {
       <PageHeader
         eyebrow="কালেকশন"
         title="শপ"
-        description="সাইজ, দাম, রঙ ও ক্যাটাগরি অনুযায়ী ফিল্টার করে আপনার পছন্দের জোড়া খুঁজে নিন।"
+        description="আপনার পছন্দ অনুযায়ী ফিল্টার করে সহজেই কাঙ্ক্ষিত পোশাক খুঁজে নিন।"
       />
       <div className="container-x py-10">
         <ShopBrowser />
