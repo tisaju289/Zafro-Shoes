@@ -295,8 +295,8 @@ function ProductPage() {
               </div>
             )}
 
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-              <div className="flex items-center justify-between gap-2 sm:contents">
+            <div className="mt-5 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
                 <QuantitySelector value={quantity} max={stock} onChange={setQuantity} />
                 <Button
                   variant="outline"
@@ -316,33 +316,35 @@ function ProductPage() {
                 onClick={addToCart}
                 disabled={outOfStock}
                 size="lg"
-                className="w-full sm:flex-1 md:flex-none md:px-6"
+                className="w-full md:px-6"
               >
                 কার্টে যোগ করুন
               </Button>
-              <Button
-                asChild
-                variant="secondary"
-                size="lg"
-                disabled={outOfStock}
-                className="w-full sm:flex-1 md:w-auto md:flex-none"
-              >
-                <Link to="/checkout" onClick={addToCart}>
-                  এখনই কিনুন
-                </Link>
-              </Button>
-              {whatsappHref && (
+              <div className="flex w-full gap-2">
                 <Button
                   asChild
+                  variant="secondary"
                   size="lg"
                   disabled={outOfStock}
-                  className="w-full bg-[#25D366] text-white hover:bg-[#20bd5a] sm:flex-1 md:w-auto md:flex-none"
+                  className="min-w-0 flex-1"
                 >
-                  <a href={whatsappHref} target="_blank" rel="noreferrer">
-                    <MessageCircle className="size-4" /> WhatsApp অর্ডার
-                  </a>
+                  <Link to="/checkout" onClick={addToCart}>
+                    এখনই কিনুন
+                  </Link>
                 </Button>
-              )}
+                {whatsappHref && (
+                  <Button
+                    asChild
+                    size="lg"
+                    disabled={outOfStock}
+                    className="min-w-0 flex-1 bg-[#25D366] text-white hover:bg-[#20bd5a]"
+                  >
+                    <a href={whatsappHref} target="_blank" rel="noreferrer">
+                      <MessageCircle className="size-4" /> WhatsApp অর্ডার
+                    </a>
+                  </Button>
+                )}
+              </div>
             </div>
 
             <div className="mt-5 grid gap-2.5 rounded-lg border border-border bg-muted/40 p-3 text-sm md:p-4">
