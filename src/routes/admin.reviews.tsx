@@ -106,10 +106,26 @@ function AdminReviewsPage() {
         comment: item.comment.trim() || null,
         is_approved: item.is_approved,
       };
-      const result = item.id
-        ? await supabase.from("reviews").update(payload).eq("id", item.id)
-        : await supabase.from("reviews").insert(payload);
-      if (result.error) throw result.error;
+      if (item.id) {
+        const { error } = await supabase.from("reviews").update(payload).eq("id", item.id);
+        if (error) throw error;
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("reviews")
+        .insert({ ...payload, is_approved: false })
+        .select("id")
+        .single();
+      if (error) throw error;
+
+      if (item.is_approved) {
+        const { error: approvalError } = await supabase
+          .from("reviews")
+          .update({ is_approved: true })
+          .eq("id", data.id);
+        if (approvalError) throw approvalError;
+      }
     },
     onSuccess: () => {
       toast.success("রিভিউ সংরক্ষণ হয়েছে");
