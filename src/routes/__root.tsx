@@ -16,10 +16,10 @@ import { InstallPrompt } from "@/components/storefront/InstallPrompt";
 import { AuthProvider } from "@/lib/auth";
 import { CartProvider } from "@/lib/cart";
 import { DynamicHead } from "@/lib/dynamic-head";
+import { supabase } from "@/integrations/supabase/client";
 import { StoreProvider } from "@/lib/store-context";
 import { WishlistProvider } from "@/lib/wishlist";
 import { TrackingManager } from "@/lib/tracking";
-
 
 function NotFoundComponent() {
   return (
@@ -42,7 +42,6 @@ function NotFoundComponent() {
     </div>
   );
 }
-
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
@@ -82,30 +81,72 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#7a2b3f" },
-      { name: "mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap",
-      },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "manifest", href: "/manifest.webmanifest?v=default" },
-      { rel: "apple-touch-icon", href: "/icons/icon-192.png" },
-    ],
-  }),
+  head: async () => {
+    let branding: {
+      store_name?: string;
+      tagline?: string;
+      meta_title?: string;
+      meta_description?: string;
+      og_image?: string;
+      favicon_url?: string;
+      logo_url?: string;
+    } = {};
+    try {
+      const { data } = await supabase
+        .from("store_settings")
+        .select("data")
+        .eq("id", "default")
+        .maybeSingle();
+      branding = (data?.data as typeof branding) ?? {};
+    } catch {
+      // Keep the static fallback metadata when public settings are unavailable.
+    }
+
+    const storeName = branding.store_name?.trim() || "আমার স্টোর";
+    const title =
+      branding.meta_title?.trim() ||
+      [storeName, branding.tagline?.trim()].filter(Boolean).join(" — ");
+    const description = branding.meta_description?.trim() || branding.tagline?.trim() || storeName;
+    const icon = branding.favicon_url?.trim() || branding.logo_url?.trim();
+    const version = [storeName, branding.tagline, icon].filter(Boolean).join("-");
+
+    return {
+      title,
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:site_name", content: storeName },
+        ...(branding.og_image ? [{ property: "og:image", content: branding.og_image }] : []),
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+        ...(branding.og_image ? [{ name: "twitter:image", content: branding.og_image }] : []),
+        { name: "application-name", content: storeName },
+        { name: "apple-mobile-web-app-title", content: storeName },
+        { name: "theme-color", content: "#7a2b3f" },
+        { name: "mobile-web-app-capable", content: "yes" },
+        { name: "apple-mobile-web-app-capable", content: "yes" },
+        { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      ],
+      links: [
+        { rel: "stylesheet", href: appCss },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap",
+        },
+        { rel: "icon", href: icon || "/favicon.ico", type: "image/x-icon" },
+        {
+          rel: "manifest",
+          href: `/manifest.webmanifest?v=${encodeURIComponent(version || "default")}`,
+        },
+        { rel: "apple-touch-icon", href: icon || "/icons/icon-192.png" },
+      ],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -125,7 +166,6 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -148,4 +188,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

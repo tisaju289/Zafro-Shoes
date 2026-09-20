@@ -15,7 +15,7 @@ const DISMISS_KEY = "pwa-install-dismissed";
  * prompt (Android/Chrome/Edge). Hidden when already installed or dismissed.
  */
 export function InstallPrompt() {
-  const { store_name, logo_url } = useSettings();
+  const { store_name, tagline, logo_url } = useSettings();
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -67,7 +67,9 @@ export function InstallPrompt() {
           <p className="truncate text-sm font-semibold text-foreground">
             {store_name || "আমাদের"} অ্যাপ ইনস্টল করুন
           </p>
-          <p className="text-xs text-muted-foreground">হোম স্ক্রিন থেকে এক ট্যাপে শপিং করুন</p>
+          <p className="truncate text-xs text-muted-foreground">
+            {tagline || "হোম স্ক্রিন থেকে এক ট্যাপে শপিং করুন"}
+          </p>
         </div>
         <button
           type="button"
