@@ -34,7 +34,10 @@ export function PageHeader({
     <div className="border-b border-border bg-surface">
       <div className="container-x py-10 text-center md:py-14">
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h1 className="mt-2 text-2xl font-semibold md:text-4xl" style={typographyStyle(settings, "heading")}>
+        <h1
+          className="mt-2 text-2xl font-semibold md:text-4xl"
+          style={typographyStyle(settings, "heading")}
+        >
           {title}
         </h1>
         {description && (
@@ -55,22 +58,35 @@ export function SectionHeading({
   subtitle,
   titleStyle,
   subtitleStyle,
+  align = "center",
 }: {
   title: string;
   subtitle?: string | null;
   titleStyle?: Record<string, string>;
   subtitleStyle?: Record<string, string>;
+  align?: "left" | "center";
   action?: ReactNode;
 }) {
   const settings = useSettings();
 
   return (
-    <div className="mx-auto mb-3 max-w-2xl text-center md:mb-4">
-      <h2 className="text-xl font-semibold md:text-3xl" style={typographyStyle(settings, "heading", titleStyle)}>
+    <div
+      className={cn(
+        "mx-auto mb-3 max-w-2xl md:mb-4",
+        align === "center" ? "text-center" : "text-left",
+      )}
+    >
+      <h2
+        className="text-xl font-semibold md:text-3xl"
+        style={typographyStyle(settings, "heading", titleStyle)}
+      >
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-1 text-sm text-muted-foreground" style={typographyStyle(settings, "subheading", subtitleStyle)}>
+        <p
+          className="mt-1 text-sm text-muted-foreground"
+          style={typographyStyle(settings, "subheading", subtitleStyle)}
+        >
           {subtitle}
         </p>
       )}
