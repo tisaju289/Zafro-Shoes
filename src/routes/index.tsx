@@ -88,7 +88,7 @@ function HomePage() {
           case "categories":
             return (
               <section key={section.id} className="container-x section-py">
-                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
                   <SectionHeading
                     title={section.title || "ক্যাটাগরি"}
                     subtitle={section.subtitle}
@@ -114,7 +114,7 @@ function HomePage() {
           case "promo_banners":
             return banners.length ? (
               <section key={section.id} className="container-x section-py">
-                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
                   <PromoBannerCarousel banners={banners} />
                 </div>
               </section>
@@ -123,7 +123,7 @@ function HomePage() {
           case "videos":
             return videos.length ? (
               <section key={section.id} className="container-x section-py">
-                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
                   <SectionHeading
                     title={section.title || "ভিডিও কালেকশন"}
                     subtitle={section.subtitle}
@@ -138,7 +138,7 @@ function HomePage() {
           case "newsletter":
             return (
               <section key={section.id} className="container-x section-py">
-                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+                <div className="shoe-section rounded-2xl border border-border bg-surface p-3 md:p-5">
                   <div className="max-w-2xl text-center mx-auto">
                     <Mail className="mx-auto size-8 text-primary" />
                     <h2
