@@ -6,6 +6,7 @@ import { MobileBottomNav } from "@/components/storefront/MobileBottomNav";
 import { WhatsAppFloat } from "@/components/storefront/WhatsAppFloat";
 import { useSettings } from "@/lib/store-context";
 import { typographyStyle } from "@/lib/typography";
+import { cn } from "@/lib/utils";
 
 export function StoreLayout({ children }: { children: ReactNode }) {
   return (
