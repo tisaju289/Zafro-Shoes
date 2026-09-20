@@ -192,9 +192,17 @@ function HomePage() {
             const products = result?.data ?? [];
             const flag = sectionFlag(section);
             const isHot = flag === "hot";
+            const isFlashSale = flag === "flash_sale";
+            const useMarquee = isHot || isFlashSale;
             return (
               <section key={section.id} className="container-x section-py">
-                <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+                <div
+                  className={
+                    isFlashSale
+                      ? "rounded-2xl border-2 border-primary/30 bg-primary/5 p-3 shadow-lg md:p-4"
+                      : "rounded-2xl border border-border bg-surface p-3 md:p-4"
+                  }
+                >
                   <SectionHeading
                     title={section.title || ""}
                     subtitle={section.subtitle}
@@ -204,7 +212,7 @@ function HomePage() {
                   {result?.isLoading ? (
                     <ProductGridSkeleton count={4} />
                   ) : products.length ? (
-                    isHot ? (
+                    useMarquee ? (
                       <>
                         <ProductMarquee products={products} />
                         <div className="mt-3 flex justify-center">
