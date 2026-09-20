@@ -210,10 +210,9 @@ function ProductPage() {
             </div>
           </div>
 
-
-          <div className="border-t border-border p-3 md:border-l md:border-t-0 md:p-4">
+          <div className="border-t border-border p-3 text-center md:border-l md:border-t-0 md:p-4">
             <h1 className="text-xl font-semibold leading-snug md:text-3xl">{product.name}</h1>
-            <div className="mt-3 flex flex-wrap items-center gap-4">
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-4">
               <RatingStars rating={product.rating} reviewCount={product.review_count} />
               {product.sku && (
                 <span className="text-xs text-muted-foreground">কোড: {product.sku}</span>
@@ -232,7 +231,7 @@ function ProductPage() {
               price={price}
               salePrice={variant?.price ? null : product.sale_price}
               size="lg"
-              className="mt-4"
+              className="mt-4 justify-center"
             />
 
             {product.short_description && (
@@ -244,7 +243,7 @@ function ProductPage() {
             {product.sizes?.length > 0 && (
               <div className="mt-5">
                 <h3 className="mb-2 text-sm font-medium">সাইজ নির্বাচন করুন</h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                   {product.sizes.map((s) => (
                     <button
                       key={s}
@@ -266,7 +265,7 @@ function ProductPage() {
             {product.colors?.length > 0 && (
               <div className="mt-4">
                 <h3 className="mb-2 text-sm font-medium">রঙ নির্বাচন করুন</h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                   {product.colors.map((c) => (
                     <button
                       key={c}
@@ -285,8 +284,8 @@ function ProductPage() {
               </div>
             )}
 
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-              <div className="flex items-center justify-between gap-2 sm:contents">
+            <div className="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
+              <div className="flex items-center justify-center gap-2 sm:contents">
                 <QuantitySelector value={quantity} max={stock} onChange={setQuantity} />
                 <Button
                   variant="outline"
@@ -295,7 +294,10 @@ function ProductPage() {
                   onClick={() => wishlist.toggle(product.id)}
                 >
                   <Heart
-                    className={cn("size-4", wishlist.has(product.id) && "fill-primary text-primary")}
+                    className={cn(
+                      "size-4",
+                      wishlist.has(product.id) && "fill-primary text-primary",
+                    )}
                   />
                 </Button>
               </div>
@@ -371,12 +373,12 @@ function ProductPage() {
                   <li key={r.id} className="rounded-lg border border-border p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">{r.reviewer_name}</span>
-                      <span className="text-xs text-muted-foreground">{formatDate(r.created_at)}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {formatDate(r.created_at)}
+                      </span>
                     </div>
                     <RatingStars rating={r.rating} className="mt-1.5" />
-                    {r.comment && (
-                      <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>
-                    )}
+                    {r.comment && <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>}
                   </li>
                 ))}
               </ul>
