@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Heart, Minus, Package, RefreshCcw, ShieldCheck, Truck } from "lucide-react";
+import { Heart, MessageCircle, Minus, Package, RefreshCcw, ShieldCheck, Truck } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -137,6 +137,17 @@ function ProductPage() {
   const price = variant?.price ?? product.price;
   const unitPrice = effectivePrice(price, variant?.price ? null : product.sale_price);
   const outOfStock = stock <= 0;
+  const whatsappNumber = settings.whatsapp?.replace(/\D/g, "");
+  const whatsappMessage = [
+    `আসসালামু আলাইকুম, আমি এই পণ্যটি অর্ডার করতে চাই: ${product.name}`,
+    `সাইজ: ${size || "নির্বাচন করিনি"}`,
+    `রঙ: ${color || "নির্বাচন করিনি"}`,
+    `পরিমাণ: ${quantity}`,
+    `লিংক: ${typeof window !== "undefined" ? window.location.href : ""}`,
+  ].join("\n");
+  const whatsappHref = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`
+    : undefined;
 
   function addToCart() {
     if (outOfStock) {
@@ -320,6 +331,18 @@ function ProductPage() {
                   এখনই কিনুন
                 </Link>
               </Button>
+              {whatsappHref && (
+                <Button
+                  asChild
+                  size="lg"
+                  disabled={outOfStock}
+                  className="w-full bg-[#25D366] text-white hover:bg-[#20bd5a] sm:flex-1 md:w-auto md:flex-none"
+                >
+                  <a href={whatsappHref} target="_blank" rel="noreferrer">
+                    <MessageCircle className="size-4" /> WhatsApp অর্ডার
+                  </a>
+                </Button>
+              )}
             </div>
 
             <div className="mt-5 grid gap-2.5 rounded-lg border border-border bg-muted/40 p-3 text-sm md:p-4">
