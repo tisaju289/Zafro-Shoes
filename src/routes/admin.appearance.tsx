@@ -821,6 +821,21 @@ function SectionsTab() {
                 value={editing.subtitle ?? ""}
                 onChange={(v) => patch({ subtitle: v })}
               />
+              {editing.config?.["flag"] === "flash_sale" && (
+                <Field
+                  label="ফ্ল্যাশ সেল শেষ হওয়ার সময়"
+                  type="datetime-local"
+                  value={toDateTimeLocal(editing.config?.["timer_ends_at"])}
+                  onChange={(v) =>
+                    patch({
+                      config: {
+                        ...editing.config,
+                        timer_ends_at: v ? new Date(v).toISOString() : null,
+                      },
+                    })
+                  }
+                />
+              )}
               <SectionTypographyFields
                 config={editing.config}
                 onChange={(config) => patch({ config })}
@@ -862,6 +877,14 @@ function SectionsTab() {
       </Dialog>
     </div>
   );
+}
+
+function toDateTimeLocal(value: unknown) {
+  if (typeof value !== "string") return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const offset = date.getTimezoneOffset() * 60_000;
+  return new Date(date.getTime() - offset).toISOString().slice(0, 16);
 }
 
 function SectionTypographyFields({

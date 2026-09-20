@@ -1,6 +1,7 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Mail } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { CategoryScroller } from "@/components/storefront/CategoryCard";
 import { HeroFallback, HeroSlider } from "@/components/storefront/HeroSlider";
@@ -56,6 +57,66 @@ function sectionFlag(section: { section_key: string; config?: Record<string, unk
     return fromConfig as ProductFlag;
   return VALID_FLAGS.find(
     (f) => section.section_key === f || section.section_key.startsWith(`${f}_`),
+  );
+}
+
+function FlashSaleHeader({
+  title,
+  subtitle,
+  config,
+}: {
+  title: string;
+  subtitle: string | null;
+  config: Record<string, unknown> | null;
+}) {
+  const [endTime, setEndTime] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
+  const configuredEnd = typeof config?.timer_ends_at === "string" ? config.timer_ends_at : null;
+
+  useEffect(() => {
+    const configuredTime = configuredEnd ? Date.parse(configuredEnd) : Number.NaN;
+    setEndTime(Number.isFinite(configuredTime) ? configuredTime : Date.now() + 24 * 60 * 60 * 1000);
+  }, [configuredEnd]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const remaining = endTime ? Math.max(0, endTime - now) : 0;
+  const totalSeconds = Math.floor(remaining / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return (
+    <div className="mb-4 flex flex-col gap-3 border-b border-primary/15 pb-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="text-left">
+        <h2 className="text-xl font-bold text-primary md:text-3xl">{title}</h2>
+        {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+      </div>
+      <div className="shrink-0 self-start rounded-xl bg-primary px-3 py-2 text-primary-foreground shadow-md sm:self-auto">
+        <p className="mb-1 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-foreground/75">
+          অফার শেষ হবে
+        </p>
+        <div className="flex items-center gap-1.5 font-mono text-sm font-bold md:text-base">
+          {days > 0 && <TimerUnit value={days} label="দিন" />}
+          <TimerUnit value={hours} label="ঘণ্টা" />
+          <TimerUnit value={minutes} label="মিনিট" />
+          <TimerUnit value={seconds} label="সেকেন্ড" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TimerUnit({ value, label }: { value: number; label: string }) {
+  return (
+    <span className="flex items-baseline gap-0.5">
+      <span>{String(value).padStart(2, "0")}</span>
+      <span className="text-[9px] font-sans font-normal text-primary-foreground/75">{label}</span>
+    </span>
   );
 }
 
@@ -203,12 +264,20 @@ function HomePage() {
                       : "rounded-2xl border border-border bg-surface p-3 md:p-4"
                   }
                 >
-                  <SectionHeading
-                    title={section.title || ""}
-                    subtitle={section.subtitle}
-                    titleStyle={sectionTypography(section.config, "heading")}
-                    subtitleStyle={sectionTypography(section.config, "subheading")}
-                  />
+                  {isFlashSale ? (
+                    <FlashSaleHeader
+                      title={section.title || "ফ্ল্যাশ সেল"}
+                      subtitle={section.subtitle}
+                      config={section.config}
+                    />
+                  ) : (
+                    <SectionHeading
+                      title={section.title || ""}
+                      subtitle={section.subtitle}
+                      titleStyle={sectionTypography(section.config, "heading")}
+                      subtitleStyle={sectionTypography(section.config, "subheading")}
+                    />
+                  )}
                   {result?.isLoading ? (
                     <ProductGridSkeleton count={4} />
                   ) : products.length ? (
