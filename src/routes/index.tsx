@@ -91,19 +91,19 @@ function FlashSaleHeader({
   const seconds = totalSeconds % 60;
 
   return (
-    <div className="mb-4 flex flex-col gap-4 border-b border-orange-500/25 pb-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="text-left">
-        <h2 className="flex items-center gap-2 text-xl font-bold text-red-700 md:text-3xl">
-          <Flame className="size-6 fill-orange-500 text-orange-500 md:size-8" />
+    <div className="mb-4 flex items-center justify-between gap-2 border-b border-orange-500/25 pb-4">
+      <div className="min-w-0 flex-1 text-left">
+        <h2 className="flex items-center gap-1.5 text-lg font-bold text-red-700 sm:gap-2 sm:text-xl md:text-3xl">
+          <Flame className="size-5 shrink-0 fill-orange-500 text-orange-500 sm:size-6 md:size-8" />
           {title}
         </h2>
         {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      <div className="shrink-0 self-start text-red-700 sm:self-auto">
-        <p className="mb-1 text-left text-[10px] font-bold uppercase tracking-[0.18em] text-orange-700 sm:text-right">
+      <div className="shrink-0 text-right text-red-700">
+        <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.12em] text-orange-700 sm:text-[10px] sm:tracking-[0.18em]">
           অফার শেষ হবে
         </p>
-        <div className="flex items-baseline gap-2 font-mono text-2xl font-black leading-none md:gap-3 md:text-4xl">
+        <div className="flex items-baseline justify-end gap-1 font-mono text-xl font-black leading-none sm:gap-2 sm:text-2xl md:gap-3 md:text-4xl">
           {days > 0 && <TimerUnit value={days} label="দিন" />}
           <TimerUnit value={hours} label="ঘণ্টা" />
           <TimerUnit value={minutes} label="মিনিট" />
@@ -118,7 +118,9 @@ function TimerUnit({ value, label }: { value: number; label: string }) {
   return (
     <span className="flex items-baseline gap-1">
       <span>{String(value).padStart(2, "0")}</span>
-      <span className="text-[10px] font-sans font-bold text-orange-700 md:text-xs">{label}</span>
+      <span className="text-[8px] font-sans font-bold text-orange-700 sm:text-[10px] md:text-xs">
+        {label}
+      </span>
     </span>
   );
 }
