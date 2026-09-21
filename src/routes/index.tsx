@@ -24,6 +24,7 @@ import {
 } from "@/lib/queries";
 import { useSettings } from "@/lib/store-context";
 import { sectionTypography, typographyStyle } from "@/lib/typography";
+import type { Review } from "@/lib/types";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -199,6 +200,48 @@ function SizeChart({
   );
 }
 
+function ReviewCarousel({ reviews }: { reviews: Review[] }) {
+  return (
+    <div className="hide-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2">
+      {reviews.map((review) => (
+        <article
+          key={review.id}
+          className="w-[86%] shrink-0 snap-start rounded-xl border border-border/70 bg-background p-4 sm:w-[48%] lg:w-[32%]"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2">
+              {review.profile_image_url ? (
+                <img
+                  src={review.profile_image_url}
+                  alt=""
+                  className="size-9 shrink-0 rounded-full object-cover"
+                />
+              ) : null}
+              <div>
+                <p className="font-semibold">{review.reviewer_name}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {review.products?.name || "পণ্য"}
+                </p>
+              </div>
+            </div>
+            <RatingStars rating={review.rating} />
+          </div>
+          {review.product_image_url && (
+            <img
+              src={review.product_image_url}
+              alt=""
+              className="mt-3 aspect-4/5 w-full rounded-lg object-cover"
+            />
+          )}
+          {review.comment && (
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">“{review.comment}”</p>
+          )}
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function HomePage() {
   const settings = useSettings();
   const { data: sections = [] } = useQuery(homepageSectionsQuery);
@@ -293,45 +336,7 @@ function HomePage() {
                     titleStyle={sectionTypography(section.config, "heading")}
                     subtitleStyle={sectionTypography(section.config, "subheading")}
                   />
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {reviews.slice(0, section.product_limit || 6).map((review) => (
-                      <article
-                        key={review.id}
-                        className="rounded-xl border border-border/70 bg-background p-4"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex min-w-0 items-center gap-2">
-                            {review.profile_image_url ? (
-                              <img
-                                src={review.profile_image_url}
-                                alt=""
-                                className="size-9 shrink-0 rounded-full object-cover"
-                              />
-                            ) : null}
-                            <div>
-                              <p className="font-semibold">{review.reviewer_name}</p>
-                              <p className="mt-0.5 text-xs text-muted-foreground">
-                                {review.products?.name || "পণ্য"}
-                              </p>
-                            </div>
-                          </div>
-                          <RatingStars rating={review.rating} />
-                        </div>
-                        {review.product_image_url && (
-                          <img
-                            src={review.product_image_url}
-                            alt=""
-                            className="mt-3 aspect-4/5 w-full rounded-lg object-cover"
-                          />
-                        )}
-                        {review.comment && (
-                          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            “{review.comment}”
-                          </p>
-                        )}
-                      </article>
-                    ))}
-                  </div>
+                  <ReviewCarousel reviews={reviews.slice(0, section.product_limit || 6)} />
                 </div>
               </section>
             ) : null;
