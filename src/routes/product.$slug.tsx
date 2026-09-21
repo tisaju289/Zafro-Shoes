@@ -393,9 +393,9 @@ function ProductPage() {
           </TabsContent>
           <TabsContent value="reviews" className="pt-5">
             {reviews.length ? (
-              <ul className="max-w-2xl space-y-5">
+              <ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                 {reviews.map((r) => (
-                  <li key={r.id} className="rounded-lg border border-border p-4">
+                  <li key={r.id} className="min-w-0 rounded-lg border border-border p-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         {r.profile_image_url ? (
@@ -405,7 +405,9 @@ function ProductPage() {
                             className="size-8 rounded-full object-cover"
                           />
                         ) : null}
-                        <span className="text-sm font-medium">{r.reviewer_name}</span>
+                        <span className="min-w-0 truncate text-sm font-medium">
+                          {r.reviewer_name}
+                        </span>
                       </div>
                       <span className="text-xs text-muted-foreground">
                         {formatDate(r.created_at)}
@@ -416,7 +418,7 @@ function ProductPage() {
                       <img
                         src={r.product_image_url}
                         alt=""
-                        className="mt-3 aspect-4/5 w-32 rounded-lg object-cover"
+                        className="mt-3 aspect-4/5 w-full rounded-lg object-cover"
                       />
                     )}
                     {r.comment && <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>}
