@@ -634,16 +634,14 @@ const FIXED_KEYS = [
 
 type SizeChartRow = {
   size: string;
-  length: string;
-  chest: string;
-  waist: string;
+  foot_length: string;
+  foot_width: string;
 };
 
 const SIZE_CHART_COLUMNS: { key: keyof SizeChartRow; label: string }[] = [
-  { key: "size", label: "সাইজ" },
-  { key: "length", label: "লম্বা" },
-  { key: "chest", label: "বুক" },
-  { key: "waist", label: "কোমর" },
+  { key: "size", label: "জুতার সাইজ" },
+  { key: "foot_length", label: "পায়ের দৈর্ঘ্য (সেমি)" },
+  { key: "foot_width", label: "পায়ের প্রস্থ (সেমি)" },
 ];
 
 const sectionTypeLabel = (s: HomepageSection) => {
@@ -931,7 +929,7 @@ function SizeChartFields({
           type="button"
           size="sm"
           variant="outline"
-          onClick={() => updateRows([...rows, { size: "", length: "", chest: "", waist: "" }])}
+          onClick={() => updateRows([...rows, { size: "", foot_length: "", foot_width: "" }])}
         >
           <Plus className="size-4" /> সারি যোগ করুন
         </Button>

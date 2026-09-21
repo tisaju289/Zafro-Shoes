@@ -131,9 +131,8 @@ function TimerUnit({ value, label }: { value: number; label: string }) {
 
 type SizeChartRow = {
   size: string;
-  length: string;
-  chest: string;
-  waist: string;
+  foot_length: string;
+  foot_width: string;
 };
 
 function SizeChart({
@@ -164,19 +163,17 @@ function SizeChart({
           <table className="w-full min-w-[520px] text-sm">
             <thead className="bg-accent text-left">
               <tr>
-                <th className="px-4 py-3 font-semibold">সাইজ</th>
-                <th className="px-4 py-3 font-semibold">লম্বা</th>
-                <th className="px-4 py-3 font-semibold">বুক</th>
-                <th className="px-4 py-3 font-semibold">কোমর</th>
+                <th className="px-4 py-3 font-semibold">জুতার সাইজ</th>
+                <th className="px-4 py-3 font-semibold">পায়ের দৈর্ঘ্য (সেমি)</th>
+                <th className="px-4 py-3 font-semibold">পায়ের প্রস্থ (সেমি)</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row, index) => (
                 <tr key={`${row.size}-${index}`} className="border-t border-border">
                   <td className="px-4 py-3 font-medium">{row.size}</td>
-                  <td className="px-4 py-3">{row.length || "-"}</td>
-                  <td className="px-4 py-3">{row.chest || "-"}</td>
-                  <td className="px-4 py-3">{row.waist || "-"}</td>
+                  <td className="px-4 py-3">{row.foot_length || "-"}</td>
+                  <td className="px-4 py-3">{row.foot_width || "-"}</td>
                 </tr>
               ))}
             </tbody>
