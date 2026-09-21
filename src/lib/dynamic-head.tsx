@@ -68,7 +68,8 @@ export function DynamicHead() {
   useEffect(() => {
     const brand = store_name?.trim();
     const isHome = pathname === "/";
-    const base = isHome
+    const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
+    const base = isHome || isAdmin
       ? meta_title?.trim() || [brand, tagline?.trim()].filter(Boolean).join(" — ")
       : document.title;
 
