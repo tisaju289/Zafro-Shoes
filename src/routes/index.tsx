@@ -129,6 +129,64 @@ function TimerUnit({ value, label }: { value: number; label: string }) {
   );
 }
 
+type SizeChartRow = {
+  size: string;
+  length: string;
+  chest: string;
+  waist: string;
+};
+
+function SizeChart({
+  section,
+}: {
+  section: {
+    title: string | null;
+    subtitle: string | null;
+    config: Record<string, unknown> | null;
+  };
+}) {
+  const rows = Array.isArray(section.config?.rows)
+    ? (section.config.rows as SizeChartRow[]).filter((row) => row && typeof row.size === "string")
+    : [];
+
+  if (!rows.length) return null;
+
+  return (
+    <section className="container-x section-py">
+      <div className="rounded-2xl border border-border bg-surface p-3 md:p-4">
+        <SectionHeading
+          title={section.title || "সাইজ চার্ট"}
+          subtitle={section.subtitle}
+          titleStyle={sectionTypography(section.config, "heading")}
+          subtitleStyle={sectionTypography(section.config, "subheading")}
+        />
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full min-w-[520px] text-sm">
+            <thead className="bg-accent text-left">
+              <tr>
+                <th className="px-4 py-3 font-semibold">সাইজ</th>
+                <th className="px-4 py-3 font-semibold">লম্বা</th>
+                <th className="px-4 py-3 font-semibold">বুক</th>
+                <th className="px-4 py-3 font-semibold">কোমর</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={`${row.size}-${index}`} className="border-t border-border">
+                  <td className="px-4 py-3 font-medium">{row.size}</td>
+                  <td className="px-4 py-3">{row.length || "-"}</td>
+                  <td className="px-4 py-3">{row.chest || "-"}</td>
+                  <td className="px-4 py-3">{row.waist || "-"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HomePage() {
   const settings = useSettings();
   const { data: sections = [] } = useQuery(homepageSectionsQuery);
@@ -249,6 +307,9 @@ function HomePage() {
                 </div>
               </section>
             ) : null;
+
+          case "size_chart":
+            return <SizeChart key={section.id} section={section} />;
 
           case "newsletter":
             return (

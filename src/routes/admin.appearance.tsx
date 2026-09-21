@@ -622,7 +622,29 @@ const PRODUCT_FLAGS: { value: string; label: string }[] = [
   { value: "flash_sale", label: "ফ্ল্যাশ সেল" },
 ];
 
-const FIXED_KEYS = ["hero", "categories", "promo_banners", "videos", "reviews", "newsletter"];
+const FIXED_KEYS = [
+  "hero",
+  "categories",
+  "promo_banners",
+  "videos",
+  "reviews",
+  "newsletter",
+  "size_chart",
+];
+
+type SizeChartRow = {
+  size: string;
+  length: string;
+  chest: string;
+  waist: string;
+};
+
+const SIZE_CHART_COLUMNS: { key: keyof SizeChartRow; label: string }[] = [
+  { key: "size", label: "সাইজ" },
+  { key: "length", label: "লম্বা" },
+  { key: "chest", label: "বুক" },
+  { key: "waist", label: "কোমর" },
+];
 
 const sectionTypeLabel = (s: HomepageSection) => {
   const fixed: Record<string, string> = {
@@ -632,6 +654,7 @@ const sectionTypeLabel = (s: HomepageSection) => {
     videos: "ভিডিও সেকশন",
     reviews: "গ্রাহকের রিভিউ",
     newsletter: "নিউজলেটার",
+    size_chart: "সাইজ চার্ট",
   };
   if (fixed[s.section_key]) return fixed[s.section_key]!;
   const flag = (s.config?.["flag"] as string | undefined) ?? s.section_key;
@@ -730,6 +753,7 @@ function SectionsTab() {
 
   const patch = (p: Partial<HomepageSection>) => setEditing((s) => (s ? { ...s, ...p } : s));
   const isProductSection = editing && !FIXED_KEYS.includes(editing.section_key);
+  const isSizeChart = editing?.section_key === "size_chart";
 
   return (
     <div>
@@ -845,6 +869,9 @@ function SectionsTab() {
                 config={editing.config}
                 onChange={(config) => patch({ config })}
               />
+              {isSizeChart && (
+                <SizeChartFields config={editing.config} onChange={(config) => patch({ config })} />
+              )}
               <div className="grid gap-3 sm:grid-cols-2">
                 <Field
                   label="ক্রম"
@@ -854,7 +881,7 @@ function SectionsTab() {
                 />
                 {(isProductSection ||
                   editing.section_key === "reviews" ||
-                  editing.id === "new") && (
+                  (editing.id === "new" && !isSizeChart)) && (
                   <Field
                     label={editing.section_key === "reviews" ? "রিভিউ সংখ্যা" : "পণ্য সংখ্যা"}
                     type="number"
@@ -882,6 +909,70 @@ function SectionsTab() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+function SizeChartFields({
+  config,
+  onChange,
+}: {
+  config: Record<string, unknown>;
+  onChange: (config: Record<string, unknown>) => void;
+}) {
+  const rows = Array.isArray(config.rows) ? (config.rows as SizeChartRow[]) : [];
+  const updateRows = (nextRows: SizeChartRow[]) => onChange({ ...config, rows: nextRows });
+
+  return (
+    <div className="space-y-3 rounded-md border border-border p-3">
+      <div className="flex items-center justify-between gap-3">
+        <Label>সাইজ চার্টের মাপ</Label>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          onClick={() => updateRows([...rows, { size: "", length: "", chest: "", waist: "" }])}
+        >
+          <Plus className="size-4" /> সারি যোগ করুন
+        </Button>
+      </div>
+      <div className="space-y-3">
+        {rows.map((row, rowIndex) => (
+          <div
+            key={`${rowIndex}-${row.size}`}
+            className="grid gap-2 sm:grid-cols-[repeat(4,minmax(0,1fr))_auto]"
+          >
+            {SIZE_CHART_COLUMNS.map((column) => (
+              <Input
+                key={column.key}
+                aria-label={`${column.label} ${rowIndex + 1}`}
+                placeholder={column.label}
+                value={typeof row[column.key] === "string" ? row[column.key] : ""}
+                onChange={(event) => {
+                  const nextRows = rows.map((currentRow, index) =>
+                    index === rowIndex
+                      ? { ...currentRow, [column.key]: event.target.value }
+                      : currentRow,
+                  );
+                  updateRows(nextRows);
+                }}
+              />
+            ))}
+            <Button
+              type="button"
+              size="icon"
+              variant="ghost"
+              aria-label="সারি মুছে ফেলুন"
+              onClick={() => updateRows(rows.filter((_, index) => index !== rowIndex))}
+            >
+              <Trash2 className="size-4 text-destructive" />
+            </Button>
+          </div>
+        ))}
+        {rows.length === 0 && (
+          <p className="text-sm text-muted-foreground">এখনও কোনো মাপ যোগ করা হয়নি।</p>
+        )}
+      </div>
     </div>
   );
 }
