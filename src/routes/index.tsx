@@ -159,21 +159,33 @@ function SizeChart({
           titleStyle={sectionTypography(section.config, "heading")}
           subtitleStyle={sectionTypography(section.config, "subheading")}
         />
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full min-w-[520px] text-sm">
-            <thead className="bg-accent text-left">
+        <div className="w-full overflow-hidden rounded-lg border border-border">
+          <table className="w-full table-fixed text-center text-xs sm:text-sm">
+            <thead className="bg-accent text-center">
               <tr>
-                <th className="px-4 py-3 font-semibold">জুতার সাইজ</th>
-                <th className="px-4 py-3 font-semibold">পায়ের দৈর্ঘ্য (সেমি)</th>
-                <th className="px-4 py-3 font-semibold">পায়ের প্রস্থ (সেমি)</th>
+                <th className="break-words px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
+                  জুতার সাইজ
+                </th>
+                <th className="break-words px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
+                  পায়ের দৈর্ঘ্য (সেমি)
+                </th>
+                <th className="break-words px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
+                  পায়ের প্রস্থ (সেমি)
+                </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row, index) => (
                 <tr key={`${row.size}-${index}`} className="border-t border-border">
-                  <td className="px-4 py-3 font-medium">{row.size}</td>
-                  <td className="px-4 py-3">{row.foot_length || "-"}</td>
-                  <td className="px-4 py-3">{row.foot_width || "-"}</td>
+                  <td className="break-words px-1.5 py-2 font-medium sm:px-4 sm:py-3">
+                    {row.size}
+                  </td>
+                  <td className="break-words px-1.5 py-2 sm:px-4 sm:py-3">
+                    {row.foot_length || "-"}
+                  </td>
+                  <td className="break-words px-1.5 py-2 sm:px-4 sm:py-3">
+                    {row.foot_width || "-"}
+                  </td>
                 </tr>
               ))}
             </tbody>
