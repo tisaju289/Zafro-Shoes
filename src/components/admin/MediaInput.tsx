@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { uploadMedia, type MediaFolder } from "@/lib/media";
+import { cn } from "@/lib/utils";
 
 export function MediaInput({
   label,
@@ -13,12 +14,14 @@ export function MediaInput({
   folder,
   onChange,
   hint,
+  ratio = "square",
 }: {
   label: string;
   value: string | null;
   folder: MediaFolder;
   onChange: (url: string | null) => void;
   hint?: string;
+  ratio?: "square" | "portrait";
 }) {
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +44,12 @@ export function MediaInput({
       <Label>{label}</Label>
       {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
       <div className="flex items-start gap-3">
-        <div className="relative size-24 shrink-0 overflow-hidden rounded-md border border-border bg-surface">
+        <div
+          className={cn(
+            "relative w-24 shrink-0 overflow-hidden rounded-md border border-border bg-surface",
+            ratio === "portrait" ? "aspect-4/5" : "aspect-square",
+          )}
+        >
           {value ? (
             <>
               <img src={value} alt="" className="size-full object-cover" />

@@ -397,12 +397,28 @@ function ProductPage() {
                 {reviews.map((r) => (
                   <li key={r.id} className="rounded-lg border border-border p-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">{r.reviewer_name}</span>
+                      <div className="flex items-center gap-2">
+                        {r.profile_image_url ? (
+                          <img
+                            src={r.profile_image_url}
+                            alt=""
+                            className="size-8 rounded-full object-cover"
+                          />
+                        ) : null}
+                        <span className="text-sm font-medium">{r.reviewer_name}</span>
+                      </div>
                       <span className="text-xs text-muted-foreground">
                         {formatDate(r.created_at)}
                       </span>
                     </div>
                     <RatingStars rating={r.rating} className="mt-1.5" />
+                    {r.product_image_url && (
+                      <img
+                        src={r.product_image_url}
+                        alt=""
+                        className="mt-3 aspect-4/5 w-32 rounded-lg object-cover"
+                      />
+                    )}
                     {r.comment && <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>}
                   </li>
                 ))}

@@ -656,7 +656,9 @@ export type Database = {
           created_at: string
           id: string
           is_approved: boolean
+          product_image_url: string | null
           product_id: string
+          profile_image_url: string | null
           rating: number
           reviewer_name: string
           user_id: string | null
@@ -666,7 +668,9 @@ export type Database = {
           created_at?: string
           id?: string
           is_approved?: boolean
+          product_image_url?: string | null
           product_id: string
+          profile_image_url?: string | null
           rating?: number
           reviewer_name: string
           user_id?: string | null
@@ -676,7 +680,9 @@ export type Database = {
           created_at?: string
           id?: string
           is_approved?: boolean
+          product_image_url?: string | null
           product_id?: string
+          profile_image_url?: string | null
           rating?: number
           reviewer_name?: string
           user_id?: string | null

@@ -89,7 +89,9 @@ export const homepageReviewsQuery = {
   queryFn: async (): Promise<Review[]> => {
     const { data, error } = await supabase
       .from("reviews")
-      .select("id,product_id,reviewer_name,rating,comment,is_approved,created_at,products(name)")
+      .select(
+        "id,product_id,reviewer_name,profile_image_url,product_image_url,rating,comment,is_approved,created_at,products(name)",
+      )
       .eq("is_approved", true)
       .order("created_at", { ascending: false })
       .limit(12);

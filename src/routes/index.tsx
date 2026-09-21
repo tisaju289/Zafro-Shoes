@@ -73,7 +73,8 @@ function FlashSaleHeader({
 }) {
   const [endTime, setEndTime] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
-  const configuredEnd = typeof config?.timer_ends_at === "string" ? config.timer_ends_at : null;
+  const configuredEnd =
+    typeof config?.["timer_ends_at"] === "string" ? config["timer_ends_at"] : null;
 
   useEffect(() => {
     const configuredTime = configuredEnd ? Date.parse(configuredEnd) : Number.NaN;
@@ -144,8 +145,10 @@ function SizeChart({
     config: Record<string, unknown> | null;
   };
 }) {
-  const rows = Array.isArray(section.config?.rows)
-    ? (section.config.rows as SizeChartRow[]).filter((row) => row && typeof row.size === "string")
+  const rows = Array.isArray(section.config?.["rows"])
+    ? (section.config["rows"] as SizeChartRow[]).filter(
+        (row) => row && typeof row.size === "string",
+      )
     : [];
 
   if (!rows.length) return null;
@@ -163,13 +166,13 @@ function SizeChart({
           <table className="w-full table-fixed text-center text-xs sm:text-sm">
             <thead className="bg-accent text-center">
               <tr>
-                <th className="break-words px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
+                <th className="wrap-break-word px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
                   জুতার সাইজ
                 </th>
-                <th className="break-words px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
+                <th className="wrap-break-word px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
                   পায়ের দৈর্ঘ্য (সেমি)
                 </th>
-                <th className="break-words px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
+                <th className="wrap-break-word px-1.5 py-2 font-semibold sm:px-4 sm:py-3">
                   পায়ের প্রস্থ (সেমি)
                 </th>
               </tr>
@@ -177,13 +180,13 @@ function SizeChart({
             <tbody>
               {rows.map((row, index) => (
                 <tr key={`${row.size}-${index}`} className="border-t border-border">
-                  <td className="break-words px-1.5 py-2 font-medium sm:px-4 sm:py-3">
+                  <td className="wrap-break-word px-1.5 py-2 font-medium sm:px-4 sm:py-3">
                     {row.size}
                   </td>
-                  <td className="break-words px-1.5 py-2 sm:px-4 sm:py-3">
+                  <td className="wrap-break-word px-1.5 py-2 sm:px-4 sm:py-3">
                     {row.foot_length || "-"}
                   </td>
-                  <td className="break-words px-1.5 py-2 sm:px-4 sm:py-3">
+                  <td className="wrap-break-word px-1.5 py-2 sm:px-4 sm:py-3">
                     {row.foot_width || "-"}
                   </td>
                 </tr>
@@ -297,14 +300,30 @@ function HomePage() {
                         className="rounded-xl border border-border/70 bg-background p-4"
                       >
                         <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="font-semibold">{review.reviewer_name}</p>
-                            <p className="mt-0.5 text-xs text-muted-foreground">
-                              {review.products?.name || "পণ্য"}
-                            </p>
+                          <div className="flex min-w-0 items-center gap-2">
+                            {review.profile_image_url ? (
+                              <img
+                                src={review.profile_image_url}
+                                alt=""
+                                className="size-9 shrink-0 rounded-full object-cover"
+                              />
+                            ) : null}
+                            <div>
+                              <p className="font-semibold">{review.reviewer_name}</p>
+                              <p className="mt-0.5 text-xs text-muted-foreground">
+                                {review.products?.name || "পণ্য"}
+                              </p>
+                            </div>
                           </div>
                           <RatingStars rating={review.rating} />
                         </div>
+                        {review.product_image_url && (
+                          <img
+                            src={review.product_image_url}
+                            alt=""
+                            className="mt-3 aspect-4/5 w-full rounded-lg object-cover"
+                          />
+                        )}
                         {review.comment && (
                           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                             “{review.comment}”

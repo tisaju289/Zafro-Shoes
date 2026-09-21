@@ -329,6 +329,8 @@ export type Review = {
   id: string;
   product_id: string;
   reviewer_name: string;
+  profile_image_url: string | null;
+  product_image_url: string | null;
   rating: number;
   comment: string | null;
   is_approved: boolean;

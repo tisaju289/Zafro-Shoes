@@ -389,6 +389,8 @@ CREATE TABLE public.reviews (
   product_id uuid NOT NULL REFERENCES public.products(id) ON DELETE CASCADE,
   user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
   reviewer_name text NOT NULL,
+  profile_image_url text,
+  product_image_url text,
   rating int NOT NULL DEFAULT 5,
   comment text,
   is_approved boolean NOT NULL DEFAULT false,

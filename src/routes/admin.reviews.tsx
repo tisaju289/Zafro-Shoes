@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { AdminHeading } from "@/components/admin/AdminShell";
+import { MediaInput } from "@/components/admin/MediaInput";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,6 +45,8 @@ type ReviewDraft = {
   id?: string;
   product_id: string;
   reviewer_name: string;
+  profile_image_url: string | null;
+  product_image_url: string | null;
   rating: string;
   comment: string;
   is_approved: boolean;
@@ -54,6 +57,8 @@ type ProductOption = { id: string; name: string };
 const emptyDraft: ReviewDraft = {
   product_id: "",
   reviewer_name: "",
+  profile_image_url: null,
+  product_image_url: null,
   rating: "5",
   comment: "",
   is_approved: true,
@@ -68,7 +73,9 @@ function AdminReviewsPage() {
     queryFn: async (): Promise<Review[]> => {
       const { data, error } = await supabase
         .from("reviews")
-        .select("id,product_id,reviewer_name,rating,comment,is_approved,created_at,products(name)")
+        .select(
+          "id,product_id,reviewer_name,profile_image_url,product_image_url,rating,comment,is_approved,created_at,products(name)",
+        )
         .order("created_at", { ascending: false });
       if (error) throw error;
       return (data ?? []) as unknown as Review[];
@@ -102,6 +109,8 @@ function AdminReviewsPage() {
       const payload = {
         product_id: item.product_id,
         reviewer_name: item.reviewer_name.trim(),
+        profile_image_url: item.profile_image_url,
+        product_image_url: item.product_image_url,
         rating,
         comment: item.comment.trim() || null,
         is_approved: item.is_approved,
@@ -215,6 +224,8 @@ function AdminReviewsPage() {
                       id: review.id,
                       product_id: review.product_id,
                       reviewer_name: review.reviewer_name,
+                      profile_image_url: review.profile_image_url,
+                      product_image_url: review.product_image_url,
                       rating: String(review.rating),
                       comment: review.comment || "",
                       is_approved: review.is_approved,
@@ -272,6 +283,23 @@ function AdminReviewsPage() {
               <div className="space-y-1.5">
                 <Label>মন্তব্য</Label>
                 <Textarea rows={4} value={draft.comment} onChange={(e) => setDraft({ ...draft, comment: e.target.value })} />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <MediaInput
+                  label="প্রোফাইল ছবি"
+                  hint="রিভিউদাতার ছবি (স্কয়ার)"
+                  folder="store"
+                  value={draft.profile_image_url}
+                  onChange={(url) => setDraft({ ...draft, profile_image_url: url })}
+                />
+                <MediaInput
+                  label="পণ্যের ছবি"
+                  hint="ছবির অনুপাত ৪:৫"
+                  folder="store"
+                  ratio="portrait"
+                  value={draft.product_image_url}
+                  onChange={(url) => setDraft({ ...draft, product_image_url: url })}
+                />
               </div>
               <div className="flex items-center gap-2">
                 <Switch checked={draft.is_approved} onCheckedChange={(value) => setDraft({ ...draft, is_approved: value })} />
