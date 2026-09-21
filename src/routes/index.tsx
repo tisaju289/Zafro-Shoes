@@ -100,7 +100,7 @@ function FlashSaleHeader({
           {title}
         </h2>
         {subtitle && (
-          <p className="mt-1 w-full text-left text-sm text-muted-foreground">{subtitle}</p>
+          <p className="mt-1 self-start text-left text-sm text-muted-foreground">{subtitle}</p>
         )}
       </div>
       <div className="shrink-0 text-right text-red-700">
