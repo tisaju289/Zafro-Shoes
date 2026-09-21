@@ -94,8 +94,8 @@ function FlashSaleHeader({
 
   return (
     <div className="mb-4 flex items-center justify-between gap-2 border-b border-orange-500/25 pb-4">
-      <div className="min-w-0 flex-1 text-left md:text-left">
-        <h2 className="flex items-center gap-1.5 text-lg font-bold text-red-700 sm:gap-2 sm:text-xl md:text-3xl">
+      <div className="content-start min-w-0 flex-1 text-left">
+        <h2 className="flex items-center gap-1.5 text-left text-lg font-bold text-red-700 sm:gap-2 sm:text-xl md:text-3xl">
           <Flame className="size-5 shrink-0 fill-orange-500 text-orange-500 sm:size-6 md:size-8" />
           {title}
         </h2>
