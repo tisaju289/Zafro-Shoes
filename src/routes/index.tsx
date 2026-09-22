@@ -219,7 +219,7 @@ function ReviewCarousel({ reviews }: { reviews: Review[] }) {
             <article key={review.id} className="min-w-0 shrink-0 basis-1/2 px-1 lg:basis-1/3">
               <div className="h-full rounded-xl border border-border/70 bg-background p-3 sm:p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex min-w-0 items-center gap-0">
+                  <div className="flex min-w-0 flex-1 items-center">
                     {review.profile_image_url ? (
                       <img
                         src={review.profile_image_url}
@@ -227,7 +227,7 @@ function ReviewCarousel({ reviews }: { reviews: Review[] }) {
                         className="size-8 shrink-0 rounded-full object-cover sm:size-9"
                       />
                     ) : null}
-                    <div className="min-w-0">
+                    <div className="ml-0 min-w-0">
                       <p className="truncate text-sm font-semibold sm:text-base">
                         {review.reviewer_name}
                       </p>
