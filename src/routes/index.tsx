@@ -25,9 +25,51 @@ import {
 } from "@/lib/queries";
 import { useSettings } from "@/lib/store-context";
 import { sectionTypography, typographyStyle } from "@/lib/typography";
-import type { Review } from "@/lib/types";
+import type { Product, Review } from "@/lib/types";
 
 export const Route = createFileRoute("/")({
+  loader: async ({ context }) => {
+    const queryClient = context.queryClient;
+    const load = <T,>(query: { queryKey: readonly unknown[]; queryFn: () => Promise<T> }) =>
+      queryClient.ensureQueryData(query).catch(() => undefined as T | undefined);
+
+    const [sections, slides, categories, banners, videos, reviews] = await Promise.all([
+      load(homepageSectionsQuery),
+      load(heroSlidesQuery),
+      load(categoriesQuery),
+      load(promoBannersQuery),
+      load(showcaseVideosQuery),
+      load(homepageReviewsQuery),
+    ]);
+
+    const productSections = (sections ?? []).filter(
+      (section) => section.is_visible && sectionFlag(section),
+    );
+    const products = await Promise.all(
+      productSections.map(async (section) => {
+        const flag = sectionFlag(section);
+        return {
+          id: section.id,
+          data: flag
+            ? await load(flaggedProductsQuery(flag, section.product_limit || 8))
+            : undefined,
+        };
+      }),
+    );
+
+    return {
+      sections: sections ?? [],
+      slides: slides ?? [],
+      categories: categories ?? [],
+      banners: banners ?? [],
+      videos: videos ?? [],
+      reviews: reviews ?? [],
+      products: Object.fromEntries(products.map((item) => [item.id, item.data ?? []])) as Record<
+        string,
+        Product[]
+      >,
+    };
+  },
   head: () => ({
     meta: [
       { title: "প্রিমিয়াম বাংলাদেশি ফ্যাশন — অনলাইন কালেকশন" },
@@ -280,20 +322,40 @@ function ReviewCarousel({ reviews }: { reviews: Review[] }) {
 }
 
 function HomePage() {
+  const initialData = Route.useLoaderData();
   const settings = useSettings();
-  const { data: sections = [] } = useQuery(homepageSectionsQuery);
-  const { data: slides = [], isLoading: slidesLoading } = useQuery(heroSlidesQuery);
-  const { data: categories = [] } = useQuery(categoriesQuery);
-  const { data: banners = [] } = useQuery(promoBannersQuery);
-  const { data: videos = [] } = useQuery(showcaseVideosQuery);
-  const { data: reviews = [] } = useQuery(homepageReviewsQuery);
+  const { data: sections = [] } = useQuery({
+    ...homepageSectionsQuery,
+    initialData: initialData.sections,
+  });
+  const { data: slides = [], isLoading: slidesLoading } = useQuery({
+    ...heroSlidesQuery,
+    initialData: initialData.slides,
+  });
+  const { data: categories = [] } = useQuery({
+    ...categoriesQuery,
+    initialData: initialData.categories,
+  });
+  const { data: banners = [] } = useQuery({
+    ...promoBannersQuery,
+    initialData: initialData.banners,
+  });
+  const { data: videos = [] } = useQuery({
+    ...showcaseVideosQuery,
+    initialData: initialData.videos,
+  });
+  const { data: reviews = [] } = useQuery({
+    ...homepageReviewsQuery,
+    initialData: initialData.reviews,
+  });
 
   const productSections = sections.filter((s) => s.is_visible && sectionFlag(s));
 
   const productResults = useQueries({
-    queries: productSections.map((s) =>
-      flaggedProductsQuery(sectionFlag(s)!, s.product_limit || 8),
-    ),
+    queries: productSections.map((s) => ({
+      ...flaggedProductsQuery(sectionFlag(s)!, s.product_limit || 8),
+      initialData: initialData.products[s.id],
+    })),
   });
 
   const visible = sections.filter((s) => s.is_visible).sort((a, b) => a.sort_order - b.sort_order);
