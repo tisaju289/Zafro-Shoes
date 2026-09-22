@@ -12,7 +12,6 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
-import { InstallPrompt } from "@/components/storefront/InstallPrompt";
 import { AuthProvider } from "@/lib/auth";
 import { CartProvider } from "@/lib/cart";
 import { DynamicHead } from "@/lib/dynamic-head";
@@ -108,7 +107,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       [storeName, branding.tagline?.trim()].filter(Boolean).join(" — ");
     const description = branding.meta_description?.trim() || branding.tagline?.trim() || storeName;
     const icon = branding.favicon_url?.trim() || branding.logo_url?.trim();
-    const version = [storeName, branding.tagline, icon].filter(Boolean).join("-");
 
     return {
       title,
@@ -124,11 +122,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { name: "twitter:card", content: "summary_large_image" },
         ...(branding.og_image ? [{ name: "twitter:image", content: branding.og_image }] : []),
         { name: "application-name", content: storeName },
-        { name: "apple-mobile-web-app-title", content: storeName },
         { name: "theme-color", content: "#7a2b3f" },
-        { name: "mobile-web-app-capable", content: "yes" },
-        { name: "apple-mobile-web-app-capable", content: "yes" },
-        { name: "apple-mobile-web-app-status-bar-style", content: "default" },
       ],
       links: [
         { rel: "stylesheet", href: appCss },
@@ -139,11 +133,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           href: "https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap",
         },
         { rel: "icon", href: icon || "/favicon.ico", type: "image/x-icon" },
-        {
-          rel: "manifest",
-          href: `/manifest.webmanifest?v=${encodeURIComponent(version || "default")}`,
-        },
-        { rel: "apple-touch-icon", href: icon || "/icons/icon-192.png" },
       ],
     };
   },
@@ -179,7 +168,6 @@ function RootComponent() {
             <WishlistProvider>
               {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
               <Outlet />
-              <InstallPrompt />
               <Toaster position="top-center" richColors />
             </WishlistProvider>
           </CartProvider>

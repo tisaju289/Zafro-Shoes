@@ -29,12 +29,6 @@ function upsertIcon(rel: string, href: string) {
   el.removeAttribute("type");
 }
 
-function upsertManifest(version: string) {
-  const manifest = document.head.querySelector<HTMLLinkElement>('link[rel="manifest"]');
-  if (!manifest) return;
-  manifest.href = `/manifest.webmanifest?v=${encodeURIComponent(version || "default")}`;
-}
-
 /**
  * Applies admin-managed branding (favicon, title suffix, tagline, SEO meta)
  * on top of each route's own head metadata.
@@ -62,7 +56,6 @@ export function DynamicHead() {
       upsertIcon("icon", icon);
       upsertIcon("apple-touch-icon", icon);
     }
-    upsertManifest([store_name, favicon_url, logo_url].filter(Boolean).join("-"));
   }, [favicon_url, logo_url, store_name]);
 
   useEffect(() => {
