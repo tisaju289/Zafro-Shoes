@@ -1,6 +1,7 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Flame, Mail } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ArrowLeft, ArrowRight, Flame, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { CategoryScroller } from "@/components/storefront/CategoryCard";
@@ -201,43 +202,79 @@ function SizeChart({
 }
 
 function ReviewCarousel({ reviews }: { reviews: Review[] }) {
+  const [viewportRef, api] = useEmblaCarousel({ loop: reviews.length > 2, align: "start" });
+
+  useEffect(() => {
+    if (!api || reviews.length < 3) return;
+
+    const timer = window.setInterval(() => api.scrollNext(), 4500);
+    return () => window.clearInterval(timer);
+  }, [api, reviews.length]);
+
   return (
-    <div className="hide-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2">
-      {reviews.map((review) => (
-        <article
-          key={review.id}
-          className="w-[86%] shrink-0 snap-start rounded-xl border border-border/70 bg-background p-4 sm:w-[48%] lg:w-[32%]"
-        >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-2">
-              {review.profile_image_url ? (
-                <img
-                  src={review.profile_image_url}
-                  alt=""
-                  className="size-9 shrink-0 rounded-full object-cover"
-                />
-              ) : null}
-              <div>
-                <p className="font-semibold">{review.reviewer_name}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {review.products?.name || "পণ্য"}
-                </p>
+    <div className="relative px-1 sm:px-5">
+      <div ref={viewportRef} className="overflow-hidden">
+        <div className="-mx-1 flex">
+          {reviews.map((review) => (
+            <article key={review.id} className="min-w-0 shrink-0 basis-1/2 px-1 lg:basis-1/3">
+              <div className="h-full rounded-xl border border-border/70 bg-background p-3 sm:p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex min-w-0 items-center gap-2">
+                    {review.profile_image_url ? (
+                      <img
+                        src={review.profile_image_url}
+                        alt=""
+                        className="size-8 shrink-0 rounded-full object-cover sm:size-9"
+                      />
+                    ) : null}
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold sm:text-base">
+                        {review.reviewer_name}
+                      </p>
+                      <p className="mt-0.5 truncate text-[10px] text-muted-foreground sm:text-xs">
+                        {review.products?.name || "পণ্য"}
+                      </p>
+                    </div>
+                  </div>
+                  <RatingStars rating={review.rating} />
+                </div>
+                {review.product_image_url && (
+                  <img
+                    src={review.product_image_url}
+                    alt=""
+                    className="mt-3 aspect-4/5 w-full rounded-lg object-cover"
+                  />
+                )}
+                {review.comment && (
+                  <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                    “{review.comment}”
+                  </p>
+                )}
               </div>
-            </div>
-            <RatingStars rating={review.rating} />
-          </div>
-          {review.product_image_url && (
-            <img
-              src={review.product_image_url}
-              alt=""
-              className="mt-3 aspect-4/5 w-full rounded-lg object-cover"
-            />
-          )}
-          {review.comment && (
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">“{review.comment}”</p>
-          )}
-        </article>
-      ))}
+            </article>
+          ))}
+        </div>
+      </div>
+      {reviews.length > 2 && (
+        <>
+          <button
+            type="button"
+            onClick={() => api?.scrollPrev()}
+            aria-label="আগের রিভিউ"
+            className="absolute left-0 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm transition-colors hover:bg-accent sm:-left-1"
+          >
+            <ArrowLeft className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => api?.scrollNext()}
+            aria-label="পরের রিভিউ"
+            className="absolute right-0 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm transition-colors hover:bg-accent sm:-right-1"
+          >
+            <ArrowRight className="size-4" />
+          </button>
+        </>
+      )}
     </div>
   );
 }
