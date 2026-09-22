@@ -64,7 +64,7 @@ const emptyDraft: ReviewDraft = {
   is_approved: true,
 };
 
-function AdminReviewsPage() {
+export function AdminReviewsPage() {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<ReviewDraft | null>(null);
 

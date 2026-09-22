@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { AdminHeading } from "@/components/admin/AdminShell";
 import { MediaInput } from "@/components/admin/MediaInput";
+import { AdminReviewsPage } from "@/routes/admin.reviews";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,6 +59,7 @@ function AppearancePage() {
           <TabsTrigger value="banners">প্রোমো ব্যানার</TabsTrigger>
           <TabsTrigger value="videos">ভিডিও</TabsTrigger>
           <TabsTrigger value="sections">হোমপেজ সেকশন</TabsTrigger>
+          <TabsTrigger value="reviews">রিভিউ</TabsTrigger>
         </TabsList>
         <TabsContent value="hero" className="pt-5">
           <HeroTab />
@@ -70,6 +72,9 @@ function AppearancePage() {
         </TabsContent>
         <TabsContent value="sections" className="pt-5">
           <SectionsTab />
+        </TabsContent>
+        <TabsContent value="reviews" className="pt-5">
+          <AdminReviewsPage />
         </TabsContent>
       </Tabs>
     </div>

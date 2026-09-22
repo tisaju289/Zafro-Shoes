@@ -9,7 +9,6 @@ import {
   ShoppingCart,
   Store,
   Tags,
-  Star,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
@@ -20,7 +19,13 @@ import { useSettings } from "@/lib/store-context";
 import { cn } from "@/lib/utils";
 
 type NavItem = {
-  to: "/admin" | "/admin/orders" | "/admin/products" | "/admin/categories" | "/admin/appearance" | "/admin/reviews" | "/admin/settings";
+  to:
+    | "/admin"
+    | "/admin/orders"
+    | "/admin/products"
+    | "/admin/categories"
+    | "/admin/appearance"
+    | "/admin/settings";
   label: string;
   icon: typeof LayoutDashboard;
   exact?: boolean;
@@ -31,7 +36,6 @@ const NAV: NavItem[] = [
   { to: "/admin/orders", label: "অর্ডার", icon: ShoppingCart },
   { to: "/admin/products", label: "পণ্য", icon: Package },
   { to: "/admin/categories", label: "ক্যাটাগরি", icon: Tags },
-  { to: "/admin/reviews", label: "রিভিউ", icon: Star },
   { to: "/admin/appearance", label: "হোমপেজ ও ব্যানার", icon: ImageIcon },
   { to: "/admin/settings", label: "সেটিংস", icon: Settings },
 ];
